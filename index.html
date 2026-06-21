@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>For You ❤️</title>
+
+<style>
+    body {
+        margin: 0;
+        background: radial-gradient(circle at center, #0b0b0f, #000);
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+        color: white;
+        text-align: center;
+    }
+
+    canvas {
+        display: block;
+    }
+
+    #btn {
+        position: absolute;
+        bottom: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 12px 24px;
+        font-size: 18px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        background: #ff4d6d;
+        color: white;
+        box-shadow: 0 0 20px #ff4d6d;
+    }
+
+    #msg {
+        position: absolute;
+        top: 20%;
+        width: 100%;
+        font-size: 22px;
+        opacity: 0;
+        transition: opacity 2s ease;
+    }
+</style>
+</head>
+
+<body>
+
+<h1 style="position:absolute; top:30%; width:100%; text-align:right; color:white; z-index:10; pointer-events:none; text-shadow: 2px 2px 8px rgba(0,0,0,0.5);">
+  Rehu Baby ❤️
+</h1>
+
+<canvas id="canvas"></canvas>
+
+<div id="msg">
+    Happy Birthday Pakhi <br><br>
+    Every curve leads back to one point - you ❤️
+</div>
+
+<button id="btn">❤️ Tap</button>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const cx = canvas.width / 2;
+const cy = canvas.height / 2;
+
+let theta = 0;
+let drawing = false;
+
+function cardioid(t) {
+    const r = 120 * (1 + Math.cos(t));
+    const x = r * Math.cos(t);
+    const y = r * Math.sin(t);
+    return { x, y };
+}
+
+function draw() {
+    if (!drawing) return;
+
+    const { x, y } = cardioid(theta);
+
+    ctx.lineTo(cx + x, cy + y);
+    ctx.strokeStyle = "#ff4d6d";
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = "#ff4d6d";
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    theta += 0.02;
+
+    if (theta < Math.PI * 2) {
+        requestAnimationFrame(draw);
+    } else {
+        showMessage();
+    }
+}
+
+function showMessage() {
+    document.getElementById("msg").style.opacity = 1;
+}
+
+document.getElementById("btn").addEventListener("click", () => {
+    ctx.beginPath();
+    theta = 0;
+    drawing = true;
+    draw();
+});
+</script>
+
+</body>
+</html>
